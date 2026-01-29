@@ -47,6 +47,7 @@ database();
 // api ends point
 app.use("/auth", authRoute);
 app.use("/product", productRoute);
+app.use("/uploads", express.static("uploads"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
