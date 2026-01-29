@@ -1,22 +1,33 @@
 import { loginService, signupService } from "../service/authService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
-export const signup = async (req, res) => {
-  try {
-    const user = await signupService(req.body);
-    res.status(201).json({
-      success: true,
-      message: "User Registered Successfully",
-      total: 1,
-      user,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};
+// export const signup = async (req, res) => {
+//   try {
+//     const user = await signupService(req.body);
+//     res.status(201).json({
+//       success: true,
+//       message: "User Registered Successfully",
+//       total: 1,
+//       user,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
+
+export const signup = asyncHandler(async (req, res) => {
+  const user = await signupService(req.body);
+  res.status(201).json({
+    success: true,
+    message: "User Registered Successfully",
+    total: 1,
+    user,
+  });
+});
 
 export const login = async (req, res) => {
   try {
@@ -35,10 +46,10 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) =>{
-    req.session.destroy();
-    res.status(200).json({
-        success: true,
-        message: "Logout Successfully"
-    })
-}
+export const logout = async (req, res) => {
+  req.session.destroy();
+  res.status(200).json({
+    success: true,
+    message: "Logout Successfully",
+  });
+};

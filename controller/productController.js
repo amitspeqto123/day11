@@ -1,4 +1,7 @@
+import { Product } from "../model/product.js";
 import { createProductService, getAllProductsService, deleteProductService } from "../service/productService.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 export const createProduct = async (req, res) => {
   try {
@@ -28,18 +31,28 @@ export const createProduct = async (req, res) => {
   }
 };
 
-export const getAllProducts = async (req, res) => {
-  try {
-    const products = await getAllProductsService();
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const products = await getAllProductsService();
 
-    res.status(200).json({
-      count: products.length,
-      products,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     res.status(200).json({
+//       count: products.length,
+//       products,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+export const getAllProducts = asyncHandler(async(req, res) =>{
+  const products = await getAllProductsService();
+  res.status(200).json(new ApiResponse({
+    statusCode: 200,
+    message: "Produt fetched successfully",
+    total: products.length,
+    data: products
+  }))
+})
 
 export const deleteProduct = async (req, res) => {
   try {

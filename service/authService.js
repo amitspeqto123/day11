@@ -1,11 +1,13 @@
 import { User } from "../model/user.js";
 import bcrypt from "bcrypt";
+import ApiError from "../utils/ApiError.js";
 
 export const signupService = async (data) => {
   const { name, email, password, role} = data;
   const existsUser = await User.findOne({ email });
   if (existsUser) {
-    throw new Error("User already exists");
+    //throw new Error("User already exists");
+    throw new ApiError(409, "User already registered")
   }
   const hashPassword = await bcrypt.hash(password, 10);
   return await User.create({
